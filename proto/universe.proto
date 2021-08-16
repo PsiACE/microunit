@@ -1,0 +1,12 @@
+syntax = "proto3";
+package microunit.universe.v1;
+
+service Universe {
+  rpc ListNodes(ListNodesRequest) returns (ListNodesResponse) {}
+}
+
+message NodeDesc { string uuid = 1; }
+
+message ListNodesRequest {}
+
+message ListNodesResponse { repeated NodeDesc descs = 1; }
