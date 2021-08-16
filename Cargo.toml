@@ -2,10 +2,14 @@
 name = "microunit"
 version = "0.1.0"
 edition = "2018"
+license = "Apache-2.0"
+homepage = "https://github.com/engula/microunit"
+repository = "https://github.com/engula/microunit"
+description = "A decentralized unit orchestration framework."
 
 [dependencies]
-uuid = { version = "0.8", features = ["serde", "v4"] }
 clap = "3.0.0-beta.4"
+uuid = { version = "0.8", features = ["serde", "v4"] }
 tokio = "1.10"
 tonic = "0.5"
 prost = "0.8"
