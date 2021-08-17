@@ -1,14 +1,14 @@
+use std::sync::Arc;
+
 use clap::Clap;
 use tonic::transport::Server;
 
-use super::Result;
+use super::{Result, DEFAULT_URL};
 use crate::node::Node;
-use crate::proto::universe_client::UniverseClient;
-use crate::proto::ListNodesRequest;
-use crate::universe::UniverseServer;
+use crate::proto::{ListNodesRequest, NodeClient};
+use crate::service::{NodeService, UnitService};
 
 const DEFAULT_ADDR: &'static str = "127.0.0.1:21812";
-const DEFAULT_URL: &'static str = "http://127.0.0.1:21812";
 
 #[derive(Clap)]
 pub struct Command {
@@ -18,9 +18,9 @@ pub struct Command {
 
 impl Command {
     #[tokio::main(flavor = "current_thread")]
-    pub async fn run(&self) {
+    pub async fn run(&self, node: Node) {
         let result = match &self.subcmd {
-            SubCommand::Init(cmd) => cmd.run().await,
+            SubCommand::Init(cmd) => cmd.run(node).await,
             SubCommand::List(cmd) => cmd.run().await,
         };
         result.unwrap();
@@ -37,13 +37,15 @@ enum SubCommand {
 struct InitCommand {}
 
 impl InitCommand {
-    async fn run(&self) -> Result<()> {
+    async fn run(&self, node: Node) -> Result<()> {
+        let node = Arc::new(node);
         let addr = DEFAULT_ADDR.parse()?;
-        let node = Node::new();
-        println!("node {} listen on {}", node.get_uuid(), addr);
-        let server = UniverseServer::new(node);
+        println!("node {} listen on {}", node.uuid(), addr);
+        let node_service = NodeService::new(node.clone());
+        let unit_service = UnitService::new(node.clone());
         Server::builder()
-            .add_service(server.into_service())
+            .add_service(node_service.into_server())
+            .add_service(unit_service.into_server())
             .serve(addr)
             .await?;
         Ok(())
@@ -58,7 +60,7 @@ struct ListCommand {
 
 impl ListCommand {
     async fn run(&self) -> Result<()> {
-        let mut cli = UniverseClient::connect(self.url.clone()).await?;
+        let mut cli = NodeClient::connect(self.url.clone()).await?;
         let req = ListNodesRequest {};
         let res = cli.list_nodes(req).await?;
         println!("{:#?}", res.into_inner().descs);

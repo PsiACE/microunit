@@ -1,0 +1,31 @@
+use std::collections::HashMap;
+
+use super::node::Node;
+use super::unit::Unit;
+
+pub struct NodeBuilder {
+    units: HashMap<String, Box<dyn Unit>>,
+}
+
+impl NodeBuilder {
+    pub fn new() -> NodeBuilder {
+        NodeBuilder {
+            units: HashMap::new(),
+        }
+    }
+
+    pub fn add_unit<U>(mut self, unit: U) -> Self
+    where
+        U: Unit + 'static,
+    {
+        let kind = unit.kind();
+        if self.units.insert(kind.clone(), Box::new(unit)).is_some() {
+            panic!("duplicated unit kind {}", kind);
+        }
+        self
+    }
+
+    pub fn build(self) -> Node {
+        Node::new(self.units)
+    }
+}

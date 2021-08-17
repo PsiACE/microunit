@@ -1,7 +1,7 @@
 syntax = "proto3";
-package microunit.universe.v1;
+package microunit.node.v1;
 
-service Universe {
+service Node {
   rpc ListNodes(ListNodesRequest) returns (ListNodesResponse) {}
 }
 

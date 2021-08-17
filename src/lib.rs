@@ -1,7 +1,7 @@
-mod cmd;
 mod node;
-mod universe;
+mod service;
 
+pub mod cmd;
 pub mod proto;
 
-pub use cmd::NodeCommand;
+pub use node::{Node, NodeBuilder, Unit, UnitHandle};

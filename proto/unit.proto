@@ -1,0 +1,22 @@
+syntax = "proto3";
+package microunit.unit.v1;
+
+service Unit {
+  rpc ListUnits(ListUnitsRequest) returns (ListUnitsResponse) {}
+  rpc CreateUnit(CreateUnitRequest) returns (CreateUnitResponse) {}
+}
+
+message UnitDesc {
+  string uuid = 1;
+  string kind = 2;
+}
+
+message UnitSpec { string kind = 1; }
+
+message ListUnitsRequest {}
+
+message ListUnitsResponse { repeated UnitDesc descs = 1; }
+
+message CreateUnitRequest { UnitSpec spec = 1; }
+
+message CreateUnitResponse { UnitDesc desc = 1; }
