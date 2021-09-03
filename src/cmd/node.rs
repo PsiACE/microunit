@@ -8,7 +8,7 @@ use crate::node::Node;
 use crate::proto::{ListNodesRequest, NodeClient};
 use crate::service::{NodeService, UnitService};
 
-const DEFAULT_ADDR: &'static str = "127.0.0.1:21812";
+const DEFAULT_ADDR: &str = "127.0.0.1:21812";
 
 #[derive(Clap)]
 pub struct Command {
