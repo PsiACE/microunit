@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
-use super::node::Node;
 use super::unit::Unit;
+use crate::node::Node;
 
 pub struct NodeBuilder {
     units: HashMap<String, Box<dyn Unit>>,
@@ -27,5 +27,11 @@ impl NodeBuilder {
 
     pub fn build(self) -> Node {
         Node::new(self.units)
+    }
+}
+
+impl Default for NodeBuilder {
+    fn default() -> Self {
+        Self::new()
     }
 }
