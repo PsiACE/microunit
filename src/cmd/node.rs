@@ -34,12 +34,15 @@ enum SubCommand {
 }
 
 #[derive(Clap)]
-struct InitCommand {}
+struct InitCommand {
+    #[clap(default_value = DEFAULT_ADDR)]
+    addr: String,
+}
 
 impl InitCommand {
     async fn run(&self, node: Node) -> Result<()> {
         let node = Arc::new(node);
-        let addr = DEFAULT_ADDR.parse()?;
+        let addr = self.addr.parse()?;
         println!("node {} listen on {}", node.uuid(), addr);
         let node_service = NodeService::new(node.clone());
         let unit_service = UnitService::new(node.clone());
