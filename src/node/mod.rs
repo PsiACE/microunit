@@ -63,9 +63,11 @@ impl Node {
     fn insert_unit_handle(&self, handle: Box<dyn UnitHandle>) {
         let uuid = handle.desc().uuid;
         let mut handles = self.unit_handles.lock().unwrap();
-        if handles.insert(uuid.clone(), handle).is_some() {
-            panic!("duplicated unit {}", uuid);
-        }
+        assert!(
+            !handles.insert(uuid.clone(), handle).is_some(),
+            "duplicated unit {}",
+            uuid
+        );
     }
 }
 

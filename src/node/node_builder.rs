@@ -19,9 +19,11 @@ impl NodeBuilder {
         U: Unit + 'static,
     {
         let kind = unit.kind();
-        if self.units.insert(kind.clone(), Box::new(unit)).is_some() {
-            panic!("duplicated unit kind {}", kind);
-        }
+        assert!(
+            !self.units.insert(kind.clone(), Box::new(unit)).is_some(),
+            "duplicated unit kind {}",
+            kind
+        );
         self
     }
 
