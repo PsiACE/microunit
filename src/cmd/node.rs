@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use clap::Clap;
+use clap::Parser;
 use tonic::transport::Server;
 
 use super::{Result, DEFAULT_URL};
@@ -10,7 +10,7 @@ use crate::service::{NodeService, UnitService};
 
 const DEFAULT_ADDR: &str = "127.0.0.1:21812";
 
-#[derive(Clap)]
+#[derive(Parser)]
 pub struct Command {
     #[clap(subcommand)]
     subcmd: SubCommand,
@@ -27,13 +27,13 @@ impl Command {
     }
 }
 
-#[derive(Clap)]
+#[derive(Parser)]
 enum SubCommand {
     Init(InitCommand),
     List(ListCommand),
 }
 
-#[derive(Clap)]
+#[derive(Parser)]
 struct InitCommand {
     #[clap(default_value = DEFAULT_ADDR)]
     addr: String,
@@ -55,7 +55,7 @@ impl InitCommand {
     }
 }
 
-#[derive(Clap)]
+#[derive(Parser)]
 struct ListCommand {
     #[clap(default_value = DEFAULT_URL)]
     url: String,

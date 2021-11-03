@@ -1,4 +1,4 @@
-use clap::Clap;
+use clap::Parser;
 
 use microunit::cmd::{NodeCommand, UnitCommand};
 use microunit::proto::UnitDesc;
@@ -42,7 +42,7 @@ impl UnitHandle for HelloHandle {
     }
 }
 
-#[derive(Clap)]
+#[derive(Parser)]
 struct Command {
     #[clap(subcommand)]
     subcmd: SubCommand,
@@ -59,7 +59,7 @@ impl Command {
     }
 }
 
-#[derive(Clap)]
+#[derive(Parser)]
 enum SubCommand {
     Node(NodeCommand),
     Unit(UnitCommand),

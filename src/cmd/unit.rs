@@ -1,9 +1,9 @@
-use clap::Clap;
+use clap::Parser;
 
 use super::{Result, DEFAULT_URL};
 use crate::proto::{CreateUnitRequest, ListUnitsRequest, UnitClient, UnitSpec};
 
-#[derive(Clap)]
+#[derive(Parser)]
 pub struct Command {
     #[clap(subcommand)]
     subcmd: SubCommand,
@@ -20,13 +20,13 @@ impl Command {
     }
 }
 
-#[derive(Clap)]
+#[derive(Parser)]
 enum SubCommand {
     List(ListCommand),
     Create(CreateCommand),
 }
 
-#[derive(Clap)]
+#[derive(Parser)]
 struct ListCommand {
     #[clap(default_value = DEFAULT_URL)]
     url: String,
@@ -42,7 +42,7 @@ impl ListCommand {
     }
 }
 
-#[derive(Clap)]
+#[derive(Parser)]
 struct CreateCommand {
     #[clap(long, default_value = DEFAULT_URL)]
     url: String,
